@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AuthDto } from '../src/auth/dto';
 import { Tokens } from '../src/auth/types';
@@ -60,7 +60,7 @@ describe('AppController (e2e)', () => {
 
     it('should refresh tokens', async () => {
       // wait for 1 second
-      await new Promise((resolve, reject) => {
+      await new Promise((resolve) => {
         setTimeout(() => {
           resolve(true);
         }, 1000);
