@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { Public, GetCurrentUserId, GetCurrentUser } from '../common/decorators';
+import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { RtGuard } from '../common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -33,7 +33,7 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@GetCurrentUserId() userId: number): Promise<boolean> {
+  logout(@GetCurrentUserId() userId: string): Promise<boolean> {
     return this.authService.logout(userId);
   }
 
@@ -42,7 +42,7 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   refreshTokens(
-    @GetCurrentUserId() userId: number,
+    @GetCurrentUserId() userId: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ): Promise<Tokens> {
     return this.authService.refreshTokens(userId, refreshToken);

@@ -25,3 +25,8 @@ yarn add @nestjs/common @nestjs/config @nestjs/core @nestjs/jwt @nestjs/passport
 ```bash
 yarn add --dev @nestjs/cli @nestjs/schematics @nestjs/testing @types/express @types/jest @types/node @types/passport-jwt @types/supertest @typescript-eslint/eslint-plugin @typescript-eslint/parser dotenv-cli eslint eslint-config-prettier eslint-plugin-prettier jest prettier prisma source-map-support supertest ts-jest ts-loader ts-node tsconfig-paths typescript
 ```
+
+### Migrate the db
+```bash
+npx dotenv -e .env -- prisma migrate reset --force
+```
