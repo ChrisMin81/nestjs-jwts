@@ -13,6 +13,7 @@ import {
   ApiExtraModels,
   ApiForbiddenResponse,
   ApiOkResponse,
+  ApiTags,
   ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
@@ -24,7 +25,8 @@ import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { RefreshTokenGuard } from '../common/guards';
 
 @Controller('auth')
-@ApiExtraModels(Tokens)
+@ApiExtraModels(Tokens, SignupDto)
+@ApiTags('authentication')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

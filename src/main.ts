@@ -10,10 +10,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
-    .setTitle('Game Hub')
-    .setDescription('The Games API description')
+    .setTitle('Authentication')
+    .setDescription('The Auth API description')
     .setVersion('0.1')
-    .addTag('games')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
