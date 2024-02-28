@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { User } from '@prisma/client';
 import { decode } from 'jsonwebtoken';
+
 import { AppModule } from '../../../app.module';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { AuthService } from '../../auth.service';
@@ -38,6 +39,7 @@ describe('Auth Flow', () => {
       const tokens = await authService.signupLocal({
         email: user.email,
         password: user.password,
+        passwordConfirm: user.password,
       });
 
       expect(tokens.access_token).toBeTruthy();
@@ -50,6 +52,7 @@ describe('Auth Flow', () => {
         tokens = await authService.signupLocal({
           email: user.email,
           password: user.password,
+          passwordConfirm: user.password,
         });
       } catch (error) {
         expect(error.status).toBe(403);
@@ -81,6 +84,7 @@ describe('Auth Flow', () => {
       await authService.signupLocal({
         email: user.email,
         password: user.password,
+        passwordConfirm: user.password,
       });
 
       const tokens = await authService.signinLocal({
@@ -121,6 +125,7 @@ describe('Auth Flow', () => {
       await authService.signupLocal({
         email: user.email,
         password: user.password,
+        passwordConfirm: user.password,
       });
 
       let userFromDb: User | null;
@@ -170,6 +175,7 @@ describe('Auth Flow', () => {
       const _tokens = await authService.signupLocal({
         email: user.email,
         password: user.password,
+        passwordConfirm: user.password,
       });
 
       const rt = _tokens.refresh_token;
@@ -199,9 +205,7 @@ describe('Auth Flow', () => {
       const _tokens = await authService.signupLocal({
         email: user.email,
         password: user.password,
-      });
-      console.log({
-        _tokens,
+        passwordConfirm: user.password,
       });
 
       const rt = _tokens.refresh_token;
@@ -225,6 +229,7 @@ describe('Auth Flow', () => {
       const _tokens = await authService.signupLocal({
         email: user.email,
         password: user.password,
+        passwordConfirm: user.password,
       });
 
       const rt = _tokens.refresh_token;

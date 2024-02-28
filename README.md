@@ -18,7 +18,7 @@ The code reflects what was explained in the video:
 
 ### Upgrade dependencies
 ```bash
-yarn add @nestjs/common @nestjs/config @nestjs/core @nestjs/jwt @nestjs/passport @nestjs/platform-express @prisma/client argon2 class-transformer class-validator passport passport-jwt reflect-metadata rimraf rxjs
+yarn add @nestjs/common @nestjs/config @nestjs/core @nestjs/jwt @nestjs/passport @nestjs/platform-express @prisma/client argon2 class-transformer class-validator passport passport-jwt reflect-metadata rimraf rxjs @nestjs/swagger
 ```
 
 ### Upgrade dev dependencies 

@@ -6,24 +6,98 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 
-import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
-import { RtGuard } from '../common/guards';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { AuthDto, SignupDto } from './dto';
 import { Tokens } from './types';
+import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
+import { RefreshTokenGuard } from '../common/guards';
 
 @Controller('auth')
+@ApiExtraModels(Tokens)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiBody({
+    required: true,
+    schema: {
+      $ref: getSchemaPath(SignupDto),
+      example: {
+        email: 'rand_user_' + new Date().getTime() + '@test.com',
+        password: '#PaSsWoRd1234!',
+        passwordConfirm: '#PaSsWoRd1234!',
+      },
+    },
+  })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    schema: {
+      $ref: getSchemaPath(Tokens),
+    },
+  })
+  @ApiBadRequestResponse({
+    description: 'if credentials are invalid',
+    schema: {
+      example: {
+        message: 'email must be an email',
+        error: 'Bad Request',
+        statusCode: 400,
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'if credentials are invalid',
+    schema: {
+      example: {
+        message: 'Credentials incorrect',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
   @Public()
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
-  signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
+  signupLocal(@Body() dto: SignupDto): Promise<Tokens> {
     return this.authService.signupLocal(dto);
   }
 
+  @ApiBadRequestResponse({
+    description: 'if provided credentials are invalid',
+    schema: {
+      example: {
+        message: ['email must be an email'],
+        error: 'Bad Request',
+        statusCode: 400,
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'logged in successfully',
+    schema: {
+      $ref: getSchemaPath(Tokens),
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'if credentials are invalid',
+    schema: {
+      example: {
+        message: 'Access Denied',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
+  })
   @Public()
   @Post('local/signin')
   @HttpCode(HttpStatus.OK)
@@ -31,14 +105,29 @@ export class AuthController {
     return this.authService.signinLocal(dto);
   }
 
+  @ApiOkResponse({
+    description: 'logged out successfully',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'if token is invalid logged out',
+  })
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: string): Promise<boolean> {
     return this.authService.logout(userId);
   }
 
+  @ApiUnauthorizedResponse({
+    description: 'if refresh token is invalid or already logged out',
+  })
+  @ApiOkResponse({
+    description: 'refreshed in successfully',
+    schema: {
+      $ref: getSchemaPath(Tokens),
+    },
+  })
   @Public()
-  @UseGuards(RtGuard)
+  @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   refreshTokens(
