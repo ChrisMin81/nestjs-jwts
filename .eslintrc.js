@@ -10,7 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
 
-    // Extends two more configuration from "import" plugin
+    // Extends two more config from "import" plugin
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
