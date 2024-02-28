@@ -1,12 +1,12 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
-import { PrismaService } from '../prisma/prisma.service';
 
-import { AuthDto } from './dto';
+import { AuthDto, SignupDto } from './dto';
 import { JwtPayload, Tokens } from './types';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -16,14 +16,14 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async signupLocal(dto: AuthDto): Promise<Tokens> {
+  async signupLocal(dto: SignupDto): Promise<Tokens> {
     const hash = await argon.hash(dto.password);
 
     const user = await this.prisma.user
       .create({
         data: {
           email: dto.email,
-          hash,
+          password: hash,
         },
       })
       .catch((error) => {
@@ -34,7 +34,9 @@ export class AuthService {
         }
         throw error;
       });
-
+    if (!user) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
@@ -50,7 +52,7 @@ export class AuthService {
 
     if (!user) throw new ForbiddenException('Access Denied');
 
-    const passwordMatches = await argon.verify(user.hash, dto.password);
+    const passwordMatches = await argon.verify(user.password, dto.password);
     if (!passwordMatches) throw new ForbiddenException('Access Denied');
 
     const tokens = await this.getTokens(user.id, user.email);
@@ -59,7 +61,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: number): Promise<boolean> {
+  async logout(userId: string): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -74,7 +76,7 @@ export class AuthService {
     return true;
   }
 
-  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
+  async refreshTokens(userId: string, rt: string): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -91,7 +93,7 @@ export class AuthService {
     return tokens;
   }
 
-  async updateRtHash(userId: number, rt: string): Promise<void> {
+  async updateRtHash(userId: string, rt: string): Promise<void> {
     const hash = await argon.hash(rt);
     await this.prisma.user.update({
       where: {
@@ -103,7 +105,7 @@ export class AuthService {
     });
   }
 
-  async getTokens(userId: number, email: string): Promise<Tokens> {
+  async getTokens(userId: string, email: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
       email: email,
