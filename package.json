@@ -5,7 +5,7 @@
   "scripts": {
     "client": "nx serve client",
     "server": "nx serve server",
-    "server-client:dev": "nx run-many --target=serve --projects=client,server"
+    "all": "nx run-many --target=serve --all"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,9 @@
+{
+  "name": "client-feature-dashboard",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/feature-dashboard/src",
+  "prefix": "full-stack-blog",
+  "tags": ["type:feature scope:client"],
+  "projectType": "library",
+  "targets": {}
+}

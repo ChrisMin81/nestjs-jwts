@@ -1,10 +1,10 @@
 ### GET request with a header
-GET http://localhost:3000/api/server-feature-todo
+GET http://localhost:3000/api/todos
 Accept: application/json
 
 
 ### Send POST request with json body
-POST http://localhost:3000/api/server-feature-todo
+POST http://localhost:3000/api/todos
 Content-Type: application/json
 
 {
