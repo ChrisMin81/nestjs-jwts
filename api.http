@@ -1,15 +1,15 @@
 ### GET request with a header
-GET http://localhost:3000/api/todos
+GET http://localhost:3000/api/posts
 Accept: application/json
 
 
 ### Send POST request with json body
-POST http://localhost:3000/api/todos
+POST http://localhost:3000/api/posts
 Content-Type: application/json
 
 {
   "completed": false,
   "description": "bar",
-  "id": "todo-3827",
+  "id": "post-3827",
   "title": "foo"
 }

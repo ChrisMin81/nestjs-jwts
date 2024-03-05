@@ -1,11 +1,11 @@
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
-import { ITodo, IUpdateTodo, IUpsertTodo } from '@fst/shared/domain';
+import { IPost, IUpdatePost, IUpsertPost } from '@fst/shared/domain';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
  * new to-do items
  */
-export class CreateTodoDto implements Pick<ITodo, 'title' | 'description'> {
+export class CreatePostDto implements Pick<IPost, 'title' | 'description'> {
   @IsString()
   @IsNotEmpty()
   title!: string;
@@ -15,7 +15,7 @@ export class CreateTodoDto implements Pick<ITodo, 'title' | 'description'> {
   description!: string;
 }
 
-export class UpsertTodoDto implements IUpsertTodo {
+export class UpsertPostDto implements IUpsertPost {
   
   @IsString()
   @IsNotEmpty()
@@ -35,6 +35,6 @@ export class UpsertTodoDto implements IUpsertTodo {
   //
 }
 
-export class UpdateTodoDto implements IUpdateTodo {
+export class UpdatePostDto implements IUpdatePost {
   //
 }

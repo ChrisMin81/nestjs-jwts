@@ -12,5 +12,5 @@ import { ApiService } from '@fst/client/data-access';
 export class FeatureDashboardComponent {
   private readonly apiService = inject(ApiService);
 
-  todoItems$ = this.apiService.getAllToDoItems();
+  postItems$ = this.apiService.getAllPostItems();
 }

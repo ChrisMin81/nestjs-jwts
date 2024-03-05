@@ -55,8 +55,26 @@ It will show tasks that you can run with Nx.
 
 - [Learn more about Exploring the Project Graph](https://nx.dev/core-features/explore-graph)
 
-## Connect with us!
+## 
+```
+npx create-nx-workspace@latest --preset nest --name full-stack-blog --appName server --nxCloud true
+```
+```
+nx generate @nrwl/angular:application --name client --style scss --prefix fse --tags type:app,scope:client --strict --backendProject server --standaloneConfig --standalone --routing
+```
+```
+npx nx generate @nx/js:library domain --directory=shared --importPath=@fst/shared/domain --skipBabelrc --standaloneConfig --tags=scope:shared,type:domain
+```
 
-- [Join the community](https://nx.dev/community)
-- [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
-- [Follow us on Twitter](https://twitter.com/nxdevtools)
+```
+npx nx generate @nx/nest:library feature-post --directory=server --controller --importPath=@fst/server/feature-post --service --strict --tags=scope:server,type:feature
+```
+```
+nx generate @nrwl/angular:library FeatureDashboard --style=scss --directory=client --importPath=@fst/client/feature-dashboard --routing --simpleName --skipModule --standalone --standaloneConfig --tags=type:feature,scope:client
+```
+```
+nx generate @nrwl/angular:library DataAccess --style=scss --directory=client --importPath=@fst/client/data-access --simpleName --skipModule --standalone --standaloneConfig
+```
+```
+nx generate @schematics/angular:service Api --project=client-data-access --path=libs/client/data-access/src/lib
+```

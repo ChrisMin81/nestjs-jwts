@@ -1,7 +1,7 @@
 {
-  "name": "server-feature-todo",
+  "name": "server-feature-post",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/server/feature-todo/src",
+  "sourceRoot": "libs/server/feature-post/src",
   "projectType": "library",
   "targets": {},
   "tags": ["scope:server", "type:feature"]
