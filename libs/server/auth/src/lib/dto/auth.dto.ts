@@ -15,6 +15,15 @@ export class SignInDto implements Pick<IUser, 'email' | 'password'> {
 }
 
 export class UserProfileDto implements IProfileDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  username!: string;
+  
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()  
+  email!: string;
 }
 /**
  * Use the `Pick` utility type to extract only the properties we want for

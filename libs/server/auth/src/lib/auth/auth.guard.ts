@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { log } from 'console';
 import { Request } from 'express';
 import { UserProfileDto } from '../dto/auth.dto';
+import { omit } from '@fst/shared/domain';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -34,7 +35,7 @@ export class AuthGuard implements CanActivate {
       const user = await this.userService.findOneById(payload?.sub);
 
       if (user) {
-        request['user'] = this.omit(user, 'userId', 'password');
+        request['user'] = omit(user, 'userId', 'password');
       }
     } catch (e) {
       console.log("ERROR", e);
@@ -43,30 +44,6 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  pick = <T extends {}, K extends keyof T>(obj: T, ...keys: K[]) => (
-    Object.fromEntries(
-      keys
-        .filter(key => key in obj)
-        .map(key => [key, obj[key]])
-    ) as Pick<T, K>
-  );
-   inclusivePick = <T extends {}, K extends (string | number | symbol)>(
-    obj: T, ...keys: K[]
-  ) => (
-    Object.fromEntries(
-      keys
-        .map(key => [key, obj[key as unknown as keyof T]])
-    ) as { [key in K]: key extends keyof T ? T[key] : undefined }
-  )
-
-  omit = <T extends {}, K extends keyof T>(
-    obj: T, ...keys: K[]
-  ) => (
-    Object.fromEntries(
-      Object.entries(obj)
-        .filter(([key]) => !keys.includes(key as K))
-    ) as Omit<T, K>
-  )
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
