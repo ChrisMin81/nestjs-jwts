@@ -6,7 +6,7 @@ import { ICreatePost, IPost, IUpdatePost, IUpsertPost } from '@fst/shared/domain
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class PostApiService {
 
   private readonly http = inject(HttpClient);
 

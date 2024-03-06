@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '@fst/client/data-access';
+import { PostApiService } from '@fst/client/data-access';
 
 @Component({
   selector: 'full-stack-blog-feature-dashboard',
@@ -10,7 +10,7 @@ import { ApiService } from '@fst/client/data-access';
   styleUrl: './feature-dashboard.component.scss'
 })
 export class FeatureDashboardComponent {
-  private readonly apiService = inject(ApiService);
+  private readonly apiService = inject(PostApiService);
 
   postItems$ = this.apiService.getAllPostItems();
 }
