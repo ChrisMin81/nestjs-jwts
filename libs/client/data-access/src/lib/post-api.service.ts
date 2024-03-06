@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICreatePost, IPost, IUpdatePost, IUpsertPost } from '@fst/shared/domain';
+import { ApiTags } from '@nestjs/swagger';
 
 @Injectable({
   providedIn: 'root'

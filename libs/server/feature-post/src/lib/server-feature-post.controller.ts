@@ -1,9 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ServerFeaturePostService } from './server-feature-post.service';
 import { IPost } from '@fst/shared/domain';
-import { CreatePostDto } from './dto/post.dto';
+import { CreatePostDto, UpdatePostDto } from './dto/post.dto';
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import { log } from 'console';
 
-@Controller({ path: 'posts' })
+const PATH = 'posts';
+
+@ApiTags(PATH)
+@ApiExtraModels(CreatePostDto)
+@Controller({ path: PATH })
 export class ServerFeaturePostController {
   constructor(private serverFeaturePostService: ServerFeaturePostService) {
   }
@@ -21,5 +27,15 @@ export class ServerFeaturePostController {
   @Post('')
   create(@Body() data: CreatePostDto): IPost {
     return this.serverFeaturePostService.create(data);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: UpdatePostDto): IPost {
+    return this.serverFeaturePostService.update(id, data);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string): IPost {
+    return this.serverFeaturePostService.delete(id);
   }
 }
