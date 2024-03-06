@@ -1,27 +1,21 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { IPost, IUpdatePost } from '@fst/shared/domain';
+import { IPost, IProfileDto, IUpdatePost, IUpdateUser, IUser } from '@fst/shared/domain';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostDto implements IPost {
+export class SignInDto implements Pick<IUser, 'email' | 'password'> {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  id!: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  description!: string;
-
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  title!: string;
+  password!: string;
 }
 
-
+export class UserProfileDto implements IProfileDto {
+}
 /**
  * Use the `Pick` utility type to extract only the properties we want for
  * new to-do items
