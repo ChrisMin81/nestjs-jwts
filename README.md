@@ -32,7 +32,7 @@ You can also run multiple targets:
 npx nx run-many -t <target1> <target2>
 ```
 
-..or add `-p` to filter specific projects
+...or add `-p` to filter specific projects
 
 ```
 npx nx run-many -t <target1> <target2> -p <proj1> <proj2>

@@ -1,4 +1,4 @@
-import { IUser } from "./user.interface";
+import { IUser } from './user.interface';
 
 export interface IPost {
   id: string;
@@ -8,6 +8,6 @@ export interface IPost {
   isPublished: boolean;
 }
 
-export type ICreatePost = Pick<IPost, 'title' | 'description'>;
+// export type ICreatePost = Pick<IPost, 'title' | 'description'>;
 export type IUpdatePost = Partial<Omit<IPost, 'id'>>;
-export type IUpsertPost = IPost;
+// export type IUpsertPost = IPost;

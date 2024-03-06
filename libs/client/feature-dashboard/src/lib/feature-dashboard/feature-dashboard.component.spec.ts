@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeatureDashboardComponent } from './feature-dashboard.component';
 // Http testing module and mocking controller
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('FeatureDashboardComponent', () => {
   let component: FeatureDashboardComponent;

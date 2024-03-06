@@ -4,26 +4,17 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { omit } from '@fst/shared/domain';
-import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '@fst/server/shared';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthUserProvider implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private configService: ServerConfigService,
-    private userService: ServerUsersService,
-    private reflector: Reflector
-  ) {
-  }
+    private userService: ServerUsersService
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass()
-    ]);
 
-    // even if the api is set to @Public() we try to set the userInfo from a possibly set token
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (token) {
@@ -35,20 +26,19 @@ export class AuthGuard implements CanActivate {
             secret
           }
         );
-
+        // 💡 We're assigning the payload to the request object here
+        // so that we can access it in our route handlers
         const user = await this.userService.findOneById(payload?.sub);
+
         if (user) {
-          // 💡 We're assigning the payload to the request object here
-          // so that we can access it in our route handlers
           request['user'] = omit(user, 'userId', 'password');
-          return true; // can be extended with e.g. Roles
         }
       } catch (e) {
         // noop maybe the token is expired or the signature invalid
       }
     }
 
-    return isPublic;
+    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

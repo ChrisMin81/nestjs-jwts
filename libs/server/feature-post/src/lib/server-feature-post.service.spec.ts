@@ -41,7 +41,7 @@ describe('ServerFeaturePostService', () => {
       description: 'test description'
     })).toHaveProperty('id');
   });
-  it('should should return an existin post', () => {
+  it('should should return an existing post', () => {
     service.clearAll();
     expect(service.getAll()).toBeTruthy();
     expect(service.getAll().length).toEqual(0);
@@ -54,7 +54,7 @@ describe('ServerFeaturePostService', () => {
 
     expect(service.getOne(newPost.id)).toEqual(newPost);
   });
-  it('should should update an existin post', () => {
+  it('should should update an existing post', () => {
     service.clearAll();
     expect(service.getAll()).toBeTruthy();
     expect(service.getAll().length).toEqual(0);
@@ -76,7 +76,7 @@ describe('ServerFeaturePostService', () => {
       }
     });
   });
-  it('should should delete an existin post', () => {
+  it('should should delete an existing post', () => {
     service.clearAll();
     expect(service.getAll()).toBeTruthy();
     expect(service.getAll().length).toEqual(0);

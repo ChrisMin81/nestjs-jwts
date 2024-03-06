@@ -4,7 +4,7 @@
  */
 
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
@@ -13,12 +13,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  app.useGlobalPipes(new ValidationPipe({ transform: true }))
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
 
   const config = new DocumentBuilder()
-    .setTitle('Blogz Api')
-    .setDescription('The Blogz API description')
+    .setTitle('Blogs Api')
+    .setDescription('The Blogs API description')
     .setVersion('1.0')
     .addTag('posts')
     .addTag('category')
@@ -35,4 +35,6 @@ async function bootstrap() {
   );
 }
 
-bootstrap();
+bootstrap()
+  .then(() => Logger.log('app started'))
+  .catch(err => Logger.error(err));

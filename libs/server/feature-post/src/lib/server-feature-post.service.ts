@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IPost } from '@fst/shared/domain';
 import { BehaviorSubject } from 'rxjs';
-import { UpdatePostDto } from './dto/post.dto';
-import { log } from 'console';
 import { randomUUID } from 'crypto';
+import { UpdatePostDto } from '@fst/server/shared';
 
 @Injectable()
 export class ServerFeaturePostService {

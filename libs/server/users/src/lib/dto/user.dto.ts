@@ -1,6 +1,6 @@
-import { IPost, IUser } from "@fst/shared/domain";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IPost, IUser } from '@fst/shared/domain';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class UserDto implements IUser {
     @ApiProperty()
@@ -25,7 +25,7 @@ export class UserDto implements IUser {
 
     @ApiProperty()
     @IsBoolean()
-    isAdmin: boolean = false;
+    isAdmin = false;
 
     @ApiProperty()
     @IsArray()

@@ -1,10 +1,23 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ServerFeaturePostService } from './server-feature-post.service';
 import { Action, IPost } from '@fst/shared/domain';
-import { CreatePostDto, PostDto, UpdatePostDto } from './dto/post.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiExtraModels, ApiNotFoundResponse, ApiOkResponse, ApiResponse, ApiResponseProperty, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { AppAbility, CheckPolicies, PoliciesGuard, ReadPolicyHandler, UpdatePolicyHandler, applyPolicy } from '@fst/server/casl';
-import { UserDto } from '@fst/server/users';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiExtraModels,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags
+} from '@nestjs/swagger';
+import {
+  AppAbility,
+  CheckPolicies,
+  forActionOn,
+  PoliciesGuard,
+  ReadPolicyHandler,
+  UpdatePolicyHandler
+} from '@fst/server/casl';
+import { CreatePostDto, PostDto, UpdatePostDto } from '@fst/server/shared';
 
 const PATH = 'posts';
 
@@ -53,7 +66,7 @@ export class ServerFeaturePostController {
   })
   @Post('')
   @UseGuards(PoliciesGuard)
-  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, PostDto))
+  @CheckPolicies(forActionOn(Action.Create, PostDto))
   create(@Body() data: CreatePostDto): IPost {
     return this.serverFeaturePostService.create(data);
   }
