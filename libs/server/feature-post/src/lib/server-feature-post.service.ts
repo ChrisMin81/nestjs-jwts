@@ -3,6 +3,7 @@ import { IPost } from '@fst/shared/domain';
 import { BehaviorSubject } from 'rxjs';
 import { UpdatePostDto } from './dto/post.dto';
 import { log } from 'console';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ServerFeaturePostService {
@@ -36,7 +37,7 @@ export class ServerFeaturePostService {
     // Use the incoming data, a randomized ID, and a default value of `false` to create the new post
     const newPost: IPost = {
       ...post,
-      id: `post-${Math.floor(Math.random() * 10000)}`,
+      id: `${randomUUID()}`,
     };
     this.posts$$.next([...current, newPost]);
     return newPost;
