@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards }
 import { ServerAuthService } from './server-auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto, UserProfileDto } from './dto/auth.dto';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './auth/guard/auth.guard';
 
 const PATH = 'auth';
 @ApiTags(PATH)
@@ -16,7 +16,6 @@ export class ServerAuthController {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
-  @UseGuards(AuthGuard)
   @Get('profile')  
   getProfile(@Request() req: any) {   
     return req.user;

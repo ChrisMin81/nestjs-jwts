@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IPost, IProfileDto, IUpdatePost, IUpdateUser, IUser } from '@fst/shared/domain';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -24,6 +24,15 @@ export class UserProfileDto implements IProfileDto {
   @IsString()
   @IsNotEmpty()  
   email!: string;
+  
+  @ApiProperty()
+  @IsBoolean()
+  isAdmin: boolean = false;
+  
+  @ApiProperty()
+  @IsArray()
+  posts: IPost[] = [];
+
 }
 /**
  * Use the `Pick` utility type to extract only the properties we want for

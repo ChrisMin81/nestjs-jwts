@@ -13,6 +13,7 @@ export class ServerFeaturePostService {
       id: 'something-something-dark-side',
       title: 'Add a route to create post items!',
       description: 'Yes, this is foreshadowing a POST route introduction',
+      isPublished: true
     },
   ]);
 
@@ -37,6 +38,7 @@ export class ServerFeaturePostService {
     // Use the incoming data, a randomized ID, and a default value of `false` to create the new post
     const newPost: IPost = {
       ...post,
+      isPublished: false,
       id: `${randomUUID()}`,
     };
     this.posts$$.next([...current, newPost]);
@@ -49,7 +51,7 @@ export class ServerFeaturePostService {
     const postIndex = this.posts$$.value.findIndex(td => td.id === id);
     if (postIndex <= -1) {
       throw new NotFoundException(`Post could not be found!`);
-    }    
+    }
     const post = this.posts$$.value[postIndex];
     const newPost: IPost = {
       ...post,
@@ -67,9 +69,9 @@ export class ServerFeaturePostService {
     let current = this.posts$$.value;
     const postToDelete = current[postIndex];
 
-    current = current.splice(postIndex+1, 1)    
+    current = current.splice(postIndex + 1, 1)
     this.posts$$.next([...current]);
-   
+
     return postToDelete;
   }
 }

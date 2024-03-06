@@ -11,12 +11,16 @@ export class ServerUsersService {
             email: 'john@test.com',
             username: 'john',
             password: 'changeme',
+            isAdmin: true,
+            posts: []
         },
         {
             userId: `18a36358-9882-4ea5-bf3e-2b5852399ba9`,
             email: 'maria@test.com',
             username: 'maria',
             password: 'guess',
+            isAdmin: false,
+            posts: []
         },
     ]);
 

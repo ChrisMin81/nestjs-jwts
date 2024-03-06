@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { IPost, IUpdatePost } from '@fst/shared/domain';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IPost, IUpdatePost, IUser } from '@fst/shared/domain';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PostDto implements IPost {
@@ -19,6 +19,14 @@ export class PostDto implements IPost {
   @IsString()
   @IsNotEmpty()
   title!: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  authorId!: IUser;
+
+  @ApiProperty()
+  @IsBoolean()
+  isPublished = false;
 }
 
 
@@ -49,4 +57,8 @@ export class UpdatePostDto implements IUpdatePost {
   @IsString()
   @IsOptional()
   title?: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  isPublished?: boolean;
 }

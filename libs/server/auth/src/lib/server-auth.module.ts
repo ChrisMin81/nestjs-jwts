@@ -3,9 +3,7 @@ import { ServerAuthController } from './server-auth.controller';
 import { ServerAuthService } from './server-auth.service';
 import { ServerUsersModule } from '@fst/server/users';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
 import { ServerConfigModule, ServerConfigService } from '@fst/server/config';
-
 @Module({
   imports: [
     ServerUsersModule, ServerConfigModule,
