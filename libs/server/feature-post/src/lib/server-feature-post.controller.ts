@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ServerFeaturePostService } from './server-feature-post.service';
-import { Action, IPost } from '@fst/shared/domain';
+import { Action, IAdminUser, IPost } from '@fst/shared/domain';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -9,22 +9,15 @@ import {
   ApiOkResponse,
   ApiTags
 } from '@nestjs/swagger';
-import {
-  AppAbility,
-  CheckPolicies,
-  forActionOn,
-  PoliciesGuard,
-  ReadPolicyHandler,
-  UpdatePolicyHandler
-} from '@fst/server/casl';
-import { CreatePostDto, PostDto, UpdatePostDto } from '@fst/server/shared';
+import { CreatePostDto, PostDto, UpdatePostDto, User } from '@fst/server/shared';
+import { ACGuard, UseRoles } from 'nest-access-control';
 
 const PATH = 'posts';
 
 @ApiTags(PATH)
 @ApiExtraModels(CreatePostDto, UpdatePostDto)
 @Controller({ path: PATH })
-@UseGuards(PoliciesGuard)
+@UseGuards(ACGuard)
 export class ServerFeaturePostController {
   constructor(private serverFeaturePostService: ServerFeaturePostService) {
   }
@@ -35,10 +28,14 @@ export class ServerFeaturePostController {
     description: 'returns a list of posts'
   })
   @Get('')
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies(new ReadPolicyHandler(PostDto))
-  getAll(): IPost[] {
-    return this.serverFeaturePostService.getAll();
+  @UseGuards(ACGuard)
+  @UseRoles({
+    resource: PATH,
+    action: Action.Read,
+    possession: 'own'
+  })
+  getAll(@User() user: IAdminUser): IPost[] {
+    return this.serverFeaturePostService.getAll(user);
   }
 
   @ApiOkResponse({
@@ -50,10 +47,14 @@ export class ServerFeaturePostController {
     description: 'if the id was not found'
   })
   @Get(':id')
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies(new ReadPolicyHandler(PostDto))
-  getOne(@Param('id') id: string): IPost {
-    return this.serverFeaturePostService.getOne(id);
+  @UseGuards(ACGuard)
+  @UseRoles({
+    resource: PATH,
+    action: Action.Read,
+    possession: 'any'
+  })
+  getOne(@Param('id') id: string, @User() user: IAdminUser): IPost | null {
+    return this.serverFeaturePostService.getOne(id, user);
   }
 
   @ApiCreatedResponse({
@@ -65,10 +66,14 @@ export class ServerFeaturePostController {
     description: 'on validation errors'
   })
   @Post('')
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies(forActionOn(Action.Create, PostDto))
-  create(@Body() data: CreatePostDto): IPost {
-    return this.serverFeaturePostService.create(data);
+  @UseGuards(ACGuard)
+  @UseRoles({
+    resource: PATH,
+    action: Action.Create,
+    possession: 'own'
+  })
+  create(@Body() data: CreatePostDto, @User('userId') userId: string): IPost {
+    return this.serverFeaturePostService.create(data, userId);
   }
 
   @ApiOkResponse({
@@ -79,11 +84,18 @@ export class ServerFeaturePostController {
   @ApiNotFoundResponse({
     description: 'if the id was not found'
   })
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies(new UpdatePolicyHandler(PostDto))
+  @UseRoles({
+    resource: PATH,
+    action: Action.Update,
+    possession: 'own'
+  })
   @Put(':id')
-  update(@Param('id') id: string, @Body() data: UpdatePostDto): IPost {
-    return this.serverFeaturePostService.update(id, data);
+  update(
+    @Param('id') id: string,
+    @Body() data: UpdatePostDto,
+    @User() user: IAdminUser
+  ): IPost {
+    return this.serverFeaturePostService.update(id, data, user);
   }
 
   @ApiOkResponse({
@@ -95,9 +107,12 @@ export class ServerFeaturePostController {
     description: 'if the id was not found'
   })
   @Delete(':id')
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, PostDto))
-  delete(@Param('id') id: string): IPost {
-    return this.serverFeaturePostService.delete(id);
+  @UseRoles({
+    resource: PATH,
+    action: Action.Delete,
+    possession: 'own'
+  })
+  delete(@Param('id') id: string, @User() user: IAdminUser): IPost {
+    return this.serverFeaturePostService.delete(id, user);
   }
 }

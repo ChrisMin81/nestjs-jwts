@@ -15,7 +15,6 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-
   const config = new DocumentBuilder()
     .setTitle('Blogs Api')
     .setDescription('The Blogs API description')
@@ -27,7 +26,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
 
-
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
@@ -37,4 +35,4 @@ async function bootstrap() {
 
 bootstrap()
   .then(() => Logger.log('app started'))
-  .catch(err => Logger.error(err));
+  .catch((err) => Logger.error(err));

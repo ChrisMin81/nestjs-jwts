@@ -4,6 +4,4 @@ import { ApiTags } from '@nestjs/swagger';
 const PATH = 'users';
 @ApiTags(PATH)
 @Controller({ path: PATH })
-export class ServerUsersController {
-
-}
+export class ServerUsersController {}

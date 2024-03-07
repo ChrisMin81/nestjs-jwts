@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request } from '@nestjs/common';
 import { ServerAuthService } from './server-auth.service';
 import { ApiTags } from '@nestjs/swagger';
-import { IUser } from '@fst/shared/domain';
+import { IProfileDto } from '@fst/shared/domain';
 import { Public, SignInDto, SignupDto } from '@fst/server/shared';
 
 const PATH = 'auth';
@@ -9,8 +9,7 @@ const PATH = 'auth';
 @ApiTags(PATH)
 @Controller(PATH)
 export class ServerAuthController {
-  constructor(private authService: ServerAuthService) {
-  }
+  constructor(private authService: ServerAuthService) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
@@ -24,9 +23,9 @@ export class ServerAuthController {
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
-  
+
   @Get('profile')
-  getProfile(@Request() req: Partial<{ user: IUser | undefined }>) {
+  getProfile(@Request() req: Partial<{ user: IProfileDto | undefined }>) {
     return req.user;
   }
 }

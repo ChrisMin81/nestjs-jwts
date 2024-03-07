@@ -4,13 +4,15 @@ import { ServerAuthService } from './server-auth.service';
 import { ServerUsersModule } from '@fst/server/users';
 import { JwtModule } from '@nestjs/jwt';
 import { ServerConfigModule, ServerConfigService } from '@fst/server/config';
+
 @Module({
   imports: [
-    ServerUsersModule, ServerConfigModule,
+    ServerUsersModule,
+    ServerConfigModule,
     JwtModule.registerAsync({
       imports: [ServerConfigModule],
       useFactory: (configService: ServerConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET')
+        secret: configService.get<string>('JWT_SECRET'),
       }),
       inject: [ServerConfigService],
     }),
@@ -19,4 +21,4 @@ import { ServerConfigModule, ServerConfigService } from '@fst/server/config';
   providers: [ServerAuthService],
   exports: [ServerAuthService],
 })
-export class ServerAuthModule { }
+export class ServerAuthModule {}

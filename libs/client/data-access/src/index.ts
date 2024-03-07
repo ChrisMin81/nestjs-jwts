@@ -1,1 +1,1 @@
-export * from './lib/post-api.service'
+export * from './lib/post-api.service';

@@ -1,7 +1,7 @@
 {
-  "name": "server-casl",
+  "name": "server-roles",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/server/casl/src",
+  "sourceRoot": "libs/server/roles/src",
   "projectType": "library",
   "targets": {},
   "tags": ["scope:server", "type:feature"]

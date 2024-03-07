@@ -6,16 +6,12 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/shared/domain",
         "main": "libs/shared/domain/src/index.ts",
         "tsConfig": "libs/shared/domain/tsconfig.lib.json",
-        "assets": [
-          "libs/shared/domain/*.md"
-        ]
+        "assets": ["libs/shared/domain/*.md"]
       }
     },
     "test": {
@@ -25,8 +21,5 @@
       }
     }
   },
-  "tags": [
-    "scope:shared",
-    "type:domain"
-  ]
+  "tags": ["scope:shared", "type:domain"]
 }

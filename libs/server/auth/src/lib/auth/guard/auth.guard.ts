@@ -14,13 +14,12 @@ export class AuthGuard implements CanActivate {
     private configService: ServerConfigService,
     private userService: ServerUsersService,
     private reflector: Reflector
-  ) {
-  }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
-      context.getClass()
+      context.getClass(),
     ]);
 
     // even if the api is set to @Public() we try to set the userInfo from a possibly set token
@@ -29,12 +28,9 @@ export class AuthGuard implements CanActivate {
     if (token) {
       try {
         const secret = this.configService.get<string>('JWT_SECRET');
-        const payload = await this.jwtService.verifyAsync(
-          token,
-          {
-            secret
-          }
-        );
+        const payload = await this.jwtService.verifyAsync(token, {
+          secret,
+        });
 
         const user = await this.userService.findOneById(payload?.sub);
         if (user) {

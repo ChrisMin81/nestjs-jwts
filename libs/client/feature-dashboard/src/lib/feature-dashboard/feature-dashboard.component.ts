@@ -7,7 +7,7 @@ import { PostApiService } from '@fst/client/data-access';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './feature-dashboard.component.html',
-  styleUrl: './feature-dashboard.component.scss'
+  styleUrl: './feature-dashboard.component.scss',
 })
 export class FeatureDashboardComponent {
   private readonly apiService = inject(PostApiService);

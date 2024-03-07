@@ -14,18 +14,22 @@ import { ServerUsersModule } from '@fst/server/users';
     JwtModule.registerAsync({
       imports: [ServerConfigModule],
       useFactory: (configService: ServerConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET')
+        secret: configService.get<string>('JWT_SECRET'),
       }),
       inject: [ServerConfigService],
     }),
-    ServerFeaturePostModule, ServerAuthModule, ServerConfigModule, ServerUsersModule],
+    ServerFeaturePostModule,
+    ServerAuthModule,
+    ServerConfigModule,
+    ServerUsersModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: AuthUserProvider,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

@@ -3,7 +3,7 @@ import { ServerUsersService } from '@fst/server/users';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { omit } from '@fst/shared/domain';
+import { AppRole, IAdminUser, IProfileDto, IUser, omit } from '@fst/shared/domain';
 
 @Injectable()
 export class AuthUserProvider implements CanActivate {
@@ -11,27 +11,29 @@ export class AuthUserProvider implements CanActivate {
     private jwtService: JwtService,
     private configService: ServerConfigService,
     private userService: ServerUsersService
-  ) { }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (token) {
       try {
         const secret = this.configService.get<string>('JWT_SECRET');
-        const payload = await this.jwtService.verifyAsync(
-          token,
-          {
-            secret
-          }
-        );
+        const payload = await this.jwtService.verifyAsync(token, {
+          secret,
+        });
         // 💡 We're assigning the payload to the request object here
         // so that we can access it in our route handlers
-        const user = await this.userService.findOneById(payload?.sub);
+        let user: Partial<IUser> | undefined =
+          await this.userService.findOneById(payload?.sub);
 
         if (user) {
-          request['user'] = omit(user, 'userId', 'password');
+          user = omit(user, 'password') as IProfileDto;
+          user = {
+            ...user,
+            isAdmin: user.roles?.includes(AppRole.ADMIN_UPDATE_OWN_POST),
+          } as IAdminUser;
+          request['user'] = user;
         }
       } catch (e) {
         // noop maybe the token is expired or the signature invalid

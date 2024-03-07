@@ -34,5 +34,4 @@ export class SignupDto implements ICreateUser {
   @IsString()
   @IsNotEmpty()
   passwordConfirmation!: string;
-
 }

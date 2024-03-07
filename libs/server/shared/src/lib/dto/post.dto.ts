@@ -3,7 +3,6 @@ import { IPost, IUpdatePost, IUser } from '@fst/shared/domain';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PostDto implements IPost {
-
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -14,7 +13,6 @@ export class PostDto implements IPost {
   @IsNotEmpty()
   description!: string;
 
-
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -22,13 +20,12 @@ export class PostDto implements IPost {
 
   @ApiProperty()
   @IsNotEmpty()
-  authorId!: IUser;
+  author!: IUser;
 
   @ApiProperty()
   @IsBoolean()
   isPublished = false;
 }
-
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
@@ -47,7 +44,6 @@ export class CreatePostDto implements Pick<IPost, 'title' | 'description'> {
 }
 
 export class UpdatePostDto implements IUpdatePost {
-
   @ApiProperty()
   @IsString()
   @IsOptional()

@@ -2,5 +2,4 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable({})
-export class ServerConfigService extends ConfigService {
-}
+export class ServerConfigService extends ConfigService {}

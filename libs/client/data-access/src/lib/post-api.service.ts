@@ -3,12 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IPost } from '@fst/shared/domain';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostApiService {
-
   private readonly http = inject(HttpClient);
 
   getAllPostItems(): Observable<IPost[]> {

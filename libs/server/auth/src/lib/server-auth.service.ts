@@ -8,8 +8,8 @@ import { AuthResponse, SignupDto } from '@fst/server/shared';
 export class ServerAuthService {
   constructor(
     private usersService: ServerUsersService,
-    private jwtService: JwtService) {
-  }
+    private jwtService: JwtService
+  ) {}
 
   async signUp(data: SignupDto): Promise<AuthResponse> {
     const userFound = await this.usersService.findOneByEmail(data.email);
@@ -17,7 +17,7 @@ export class ServerAuthService {
     if (userFound) {
       return {
         user: null,
-        access_token: null
+        access_token: null,
       };
     }
     const user = await this.usersService.createUser(data);
@@ -25,7 +25,7 @@ export class ServerAuthService {
     const payload = { sub: user.userId };
     return {
       user: result,
-      access_token: await this.jwtService.signAsync(payload)
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 
@@ -38,7 +38,7 @@ export class ServerAuthService {
     const payload = { sub: user.userId };
     return {
       user: result,
-      access_token: await this.jwtService.signAsync(payload)
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }
