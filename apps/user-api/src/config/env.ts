@@ -5,6 +5,7 @@ export const env = zennv({
     dotenv:true,
     schema: z.object({
         PORT: z.number().default(3000),
-        HOST: z.string().default("0.0.0.0")
+        HOST: z.string().default("0.0.0.0"),
+      DATABASE_URL: z.string().default('')
     })
-})
+});
